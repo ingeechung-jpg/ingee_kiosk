@@ -598,6 +598,8 @@
     // Strip YAML front matter
     text = text.replace(/^---\s*\n[\s\S]*?\n---\s*\n/, '');
     // Normalize Drive image links (public view URL)
+    text = text.replace(/https:\/\/lh3\.googleusercontent\.com\/d\/([a-zA-Z0-9_-]+)[^\s)]*/g,
+      'https://drive.google.com/uc?export=view&id=$1');
     text = text.replace(/https:\/\/drive\.usercontent\.google\.com\/download\?id=([a-zA-Z0-9_-]+)[^\s)]*/g,
       'https://drive.google.com/uc?export=view&id=$1');
     text = text.replace(/https:\/\/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)\/view[^\s)]*/g,
