@@ -1,0 +1,6 @@
+# secrets
+scripts/publish.local.gs
+scripts/*.token
+
+# system
+.DS_Store
