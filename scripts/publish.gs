@@ -94,7 +94,7 @@ function readProfile_(ss) {
     return {
       name: pickByHeader_(headers, row, ['name','이름']) || '',
       email: pickByHeader_(headers, row, ['email','메일']) || '',
-      instagram: pickByHeader_(headers, row, ['instagram','insta','ig','인스타','인스타그램','아이디']) || '',
+      instagram: pickByHeader_(headers, row, ['instagram','insta','ig','인스타','인스타그램','아이디','instagram id']) || '',
       website: pickByHeader_(headers, row, ['website','웹사이트','site']) || ''
     };
   }
@@ -110,7 +110,7 @@ function readProfile_(ss) {
   return {
     name: map['name'] || map['이름'] || '',
     email: map['email'] || map['메일'] || '',
-    instagram: map['instagram'] || map['insta'] || map['ig'] || map['인스타'] || map['인스타그램'] || map['아이디'] || '',
+    instagram: map['instagram'] || map['insta'] || map['ig'] || map['인스타'] || map['인스타그램'] || map['아이디'] || map['instagram id'] || '',
     website: map['website'] || map['웹사이트'] || map['site'] || ''
   };
 }
@@ -134,7 +134,7 @@ function readSection_(ss, sheetName) {
     const year = pickByHeader_(headers, row, ['year','년도','날짜']) || '';
     const code = pickByHeader_(headers, row, ['code','코드']) || '';
     const location = pickByHeader_(headers, row, ['location','장소']) || '';
-    const link = pickByHeader_(headers, row, ['link','url','drive','링크','주소']) || '';
+    const link = pickByHeader_(headers, row, ['link','url','drive','drivelink','drive link','링크','주소']) || '';
     const pass = pickByHeader_(headers, row, ['pass','password','비밀번호']) || '';
     const show = (showIdx === -1) ? true : isTrue_(row[showIdx]);
     const publish = (publishIdx === -1) ? true : isTrue_(row[publishIdx]);
