@@ -692,7 +692,13 @@
     function inlineFormat(text) {
       var t = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
-      // Protect URLs from emphasis parsing
+      // Links/images first (so URL protection doesn't break markdown links)
+      t = t.replace(/!\[([^\]]*)\]\(((?:https?:\/\/|data:image\/[a-zA-Z0-9.+-]+;base64,)[^\s)]+)\)/g,
+        '<figure><img src="$2" alt="$1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>$1</figcaption></figure>');
+      t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+
+      // Protect remaining URLs from emphasis parsing
       var urlMap = [];
       t = t.replace(/https?:\/\/[^\s)]+/g, function(u) {
         var key = '@@URL' + urlMap.length + '@@';
@@ -709,11 +715,6 @@
 
       // Restore URLs
       t = t.replace(/@@URL(\d+)@@/g, function(_, idx) { return urlMap[Number(idx)] || ''; });
-
-      t = t.replace(/!\[([^\]]*)\]\(((?:https?:\/\/|data:image\/[a-zA-Z0-9.+-]+;base64,)[^\s)]+)\)/g,
-        '<figure><img src="$2" alt="$1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>$1</figcaption></figure>');
-      t = t.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
       t = t.replace(/\[\^([^\]]+)\]/g, function(_, id) {
         var safeId = encodeFootnoteId(id);
         if (!safeId) return '';
@@ -855,8 +856,15 @@
         continue;
       }
 
-      // blank line
-      if (raw.trim() === '') { flushPara(); flushList(); continue; }
+      // blank line (don't break ordered list if the next line is also ordered list)
+      if (raw.trim() === '') {
+        var next = (i + 1 < lines.length) ? String(lines[i + 1]).trim() : '';
+        var nextIsOl = /^\d+\.\s+/.test(next);
+        if (inList && listTag === 'ol' && nextIsOl) {
+          continue;
+        }
+        flushPara(); flushList(); continue;
+      }
 
       // standalone image line
       if (/^!\[([^\]]*)\]\(((?:https?:\/\/|data:image\/[a-zA-Z0-9.+-]+;base64,)[^\s)]+)\)$/.test(rawTrim)) {
