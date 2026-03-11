@@ -74,6 +74,6 @@ pass: ""
 
 | **코드** | 코드블럭 지원 | `` ``` `` 사용 |
 
-![삽입이미지 켭션 테스트](https://lh3.googleusercontent.com/d/1VoK2kSbTr1rB9MSfzScJKgfFhB_pFxmR)
+![삽입이미지 켭션 테스트](https://lh3.googleusercontent.com/d/1uyDNjCvFPhywJkiefx6WBEL76tmn90L6)
 
 하단출력
