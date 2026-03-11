@@ -125,6 +125,8 @@ function readSection_(ss, sheetName) {
   const rows = values.slice(1);
   const all = [];
   const active = [];
+  const showIdx = findHeaderIndex_(headers, ['show','노출']);
+  const publishIdx = findHeaderIndex_(headers, ['publish','퍼블리시','게시']);
 
   rows.forEach(function(row, idx) {
     const rawTitle = pickByHeader_(headers, row, ['title','제목']) || '';
@@ -134,8 +136,8 @@ function readSection_(ss, sheetName) {
     const location = pickByHeader_(headers, row, ['location','장소']) || '';
     const link = pickByHeader_(headers, row, ['link','url','drive']) || '';
     const pass = pickByHeader_(headers, row, ['pass','password','비밀번호']) || '';
-    const show = isTrue_(pickByHeader_(headers, row, ['show','노출'])) ;
-    const publish = isTrue_(pickByHeader_(headers, row, ['publish','퍼블리시','게시'])) ;
+    const show = (showIdx === -1) ? true : isTrue_(row[showIdx]);
+    const publish = (publishIdx === -1) ? true : isTrue_(row[publishIdx]);
     if (!publish) return;
 
     const itemKey = makeKey_(title, year, idx);
@@ -170,6 +172,8 @@ function readNotes_(ss, sheetName) {
   const all = [];
   const active = [];
   const files = [];
+  const showIdx = findHeaderIndex_(headers, ['show','노출']);
+  const publishIdx = findHeaderIndex_(headers, ['publish','퍼블리시','게시']);
 
   rows.forEach(function(row, idx) {
     const rawTitle = pickByHeader_(headers, row, ['title','제목']) || '';
@@ -177,8 +181,8 @@ function readNotes_(ss, sheetName) {
     const year = pickByHeader_(headers, row, ['year','날짜','date']) || '';
     const textRef = pickByHeader_(headers, row, ['text','markdown','본문','마크다운문서']) || '';
     const pass = pickByHeader_(headers, row, ['pass','password','비밀번호']) || '';
-    const show = isTrue_(pickByHeader_(headers, row, ['show','노출'])) ;
-    const publish = isTrue_(pickByHeader_(headers, row, ['publish','퍼블리시','게시'])) ;
+    const show = (showIdx === -1) ? true : isTrue_(row[showIdx]);
+    const publish = (publishIdx === -1) ? true : isTrue_(row[publishIdx]);
     if (!publish) return;
 
     const itemKey = makeKey_(title, year, idx);
@@ -186,7 +190,7 @@ function readNotes_(ss, sheetName) {
     const mdPathFromSheet = looksLikePath_(mdSource) ? mdSource : '';
     const mdText = mdPathFromSheet ? '' : resolveMarkdown_(mdSource);
     const fileName = itemKey + '.md';
-    const mdPath = mdPathFromSheet || ('notes/' + fileName);
+    const mdPath = mdPathFromSheet || buildNotePathFromTitle_(title);
 
     if (mdText) files.push({ fileName: fileName, content: mdText || '' });
     const item = {
@@ -223,6 +227,17 @@ function looksLikePath_(value) {
   return /\\.md$/i.test(v) || v.indexOf('notes/') === 0 || v.indexOf('public/data/notes/') === 0;
 }
 
+function buildNotePathFromTitle_(title) {
+  const base = sanitizeFileName_(title || 'note');
+  return 'notes/' + base + '.md';
+}
+
+function sanitizeFileName_(text) {
+  const raw = String(text || '').trim();
+  if (!raw) return 'note';
+  return raw.replace(/\\s+/g, '-').replace(/[\\\\\\/:*?"<>|]/g, '').trim() || 'note';
+}
+
 function extractDriveId_(url) {
   const m = String(url || '').match(/[-\w]{25,}/);
   return m ? m[0] : '';
@@ -232,6 +247,13 @@ function normalizeHeaders_(row) {
   return row.map(function(h) {
     return String(h || '').trim().toLowerCase();
   });
+}
+
+function findHeaderIndex_(headers, candidates) {
+  for (let i = 0; i < headers.length; i++) {
+    if (candidates.indexOf(headers[i]) !== -1) return i;
+  }
+  return -1;
 }
 
 function pickByHeader_(headers, row, candidates) {
