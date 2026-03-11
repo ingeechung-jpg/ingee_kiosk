@@ -25,7 +25,7 @@ Run `publishAll()`.
 It writes:
 - `data/dashboard.json`
 - `data/sections/*.json`
-- `data/notes/*.md`
+- `public/data/notes/*.md`
 
 ## Notes
 - Password protection is **client-side** in static mode (visible in JSON). Do not use for secrets.

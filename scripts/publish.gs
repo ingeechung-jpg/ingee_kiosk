@@ -220,7 +220,7 @@ function looksLikePath_(value) {
   const v = String(value || '').trim();
   if (!v) return false;
   if (v.indexOf('http') === 0) return false;
-  return /\\.md$/i.test(v) || v.indexOf('notes/') === 0 || v.indexOf('data/notes/') === 0;
+  return /\\.md$/i.test(v) || v.indexOf('notes/') === 0 || v.indexOf('public/data/notes/') === 0;
 }
 
 function extractDriveId_(url) {
