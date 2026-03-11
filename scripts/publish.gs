@@ -4,13 +4,17 @@
  */
 
 const CONFIG = {
-  SPREADSHEET_ID: 'PASTE_SHEET_ID_HERE',
+  SPREADSHEET_ID: '1US6hBNFQIpyEeFpQihP4j37z2_Z5f8mSsGfYOj9aWP4',
   GITHUB_OWNER: 'ingeechung-jpg',
   GITHUB_REPO: 'ingee_kiosk',
   GITHUB_BRANCH: 'main',
-  GITHUB_TOKEN: 'PASTE_GITHUB_TOKEN_HERE',
+  GITHUB_TOKEN: '',
   BASE_PATH: 'data' // repo path
 };
+
+const SECRET_SHEET_ID = '1MG9o_zfaZwjf8Ln7T125xdjt4Ku-D5moIvXFO90qLBs';
+const SECRET_SHEET_NAME = 'Secrets';
+const SECRET_TOKEN_KEY = 'github_token';
 
 const SHEETS = {
   profile: 'Profile',
@@ -22,6 +26,7 @@ const SHEETS = {
 };
 
 function publishAll() {
+  ensureToken_();
   const ss = SpreadsheetApp.openById(CONFIG.SPREADSHEET_ID);
   const profile = readProfile_(ss);
   const courses = readSection_(ss, SHEETS.courses);
@@ -51,6 +56,29 @@ function publishAll() {
   notes.files.forEach(function(f) {
     putText_('notes/' + f.fileName, f.content);
   });
+}
+
+function ensureToken_() {
+  if (CONFIG.GITHUB_TOKEN) return;
+  const token = getTokenFromSecretSheet_();
+  if (!token) throw new Error('GitHub token is empty. Check Secrets sheet.');
+  CONFIG.GITHUB_TOKEN = token;
+}
+
+function getTokenFromSecretSheet_() {
+  const ss = SpreadsheetApp.openById(SECRET_SHEET_ID);
+  const sheet = ss.getSheetByName(SECRET_SHEET_NAME);
+  if (!sheet) return '';
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 1) return '';
+  const values = sheet.getRange(1, 1, lastRow, 2).getValues();
+  for (let i = 0; i < values.length; i++) {
+    const key = String(values[i][0] || '').trim();
+    if (key === SECRET_TOKEN_KEY) {
+      return String(values[i][1] || '').trim();
+    }
+  }
+  return '';
 }
 
 function readProfile_(ss) {
@@ -154,15 +182,18 @@ function readNotes_(ss, sheetName) {
     if (!publish) return;
 
     const itemKey = makeKey_(title, year, idx);
-    const mdText = resolveMarkdown_(textRef);
+    const mdSource = String(textRef || '').trim();
+    const mdPathFromSheet = looksLikePath_(mdSource) ? mdSource : '';
+    const mdText = mdPathFromSheet ? '' : resolveMarkdown_(mdSource);
     const fileName = itemKey + '.md';
+    const mdPath = mdPathFromSheet || ('notes/' + fileName);
 
-    files.push({ fileName: fileName, content: mdText || '' });
+    if (mdText) files.push({ fileName: fileName, content: mdText || '' });
     const item = {
       itemKey: itemKey,
       title: title,
       year: normalizeDate_(year),
-      mdPath: 'notes/' + fileName,
+      mdPath: mdPath,
       requiresPassword: !!pass,
       pass: String(pass || '')
     };
@@ -183,6 +214,13 @@ function resolveMarkdown_(value) {
     }
   }
   return raw;
+}
+
+function looksLikePath_(value) {
+  const v = String(value || '').trim();
+  if (!v) return false;
+  if (v.indexOf('http') === 0) return false;
+  return /\\.md$/i.test(v) || v.indexOf('notes/') === 0 || v.indexOf('data/notes/') === 0;
 }
 
 function extractDriveId_(url) {

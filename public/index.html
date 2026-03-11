@@ -133,8 +133,9 @@
 
 <script>
   window.__INITIAL_DASHBOARD_DATA__ = null;
-  window.__APP_CONFIG__ = {
-    apiBase: '/api'
+  window.__APP_CONFIG__ = window.__APP_CONFIG__ || {
+    staticMode: true,
+    staticBase: './data'
   };
 </script>
 <script src="./js/app.js"></script>
