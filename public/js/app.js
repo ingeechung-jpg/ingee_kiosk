@@ -1,6 +1,8 @@
   var APP_CONFIG = window.__APP_CONFIG__ || {};
   var STATIC_MODE = !!APP_CONFIG.staticMode;
   var STATIC_BASE = (APP_CONFIG.staticBase || './data').replace(/\/$/, '');
+  var FAST_CACHE = !!APP_CONFIG.fastCache;
+  var CACHE_BUSTER = FAST_CACHE ? ('v=' + Date.now()) : '';
   var STATIC_INDEX = { sections: {}, notes: {} };
 
   function postJson(url, payload) {
@@ -38,7 +40,9 @@
   }
 
   function staticPath(path) {
-    return STATIC_BASE + '/' + String(path || '').replace(/^\/+/, '');
+    var base = STATIC_BASE + '/' + String(path || '').replace(/^\/+/, '');
+    if (!CACHE_BUSTER) return base;
+    return base + (base.indexOf('?') === -1 ? '?' : '&') + CACHE_BUSTER;
   }
 
   function fetchJson(path) {
