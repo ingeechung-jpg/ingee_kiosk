@@ -134,7 +134,7 @@ function readSection_(ss, sheetName) {
     const year = pickByHeader_(headers, row, ['year','년도','날짜']) || '';
     const code = pickByHeader_(headers, row, ['code','코드']) || '';
     const location = pickByHeader_(headers, row, ['location','장소']) || '';
-    const link = pickByHeader_(headers, row, ['link','url','drive']) || '';
+    const link = pickByHeader_(headers, row, ['link','url','drive','링크','주소']) || '';
     const pass = pickByHeader_(headers, row, ['pass','password','비밀번호']) || '';
     const show = (showIdx === -1) ? true : isTrue_(row[showIdx]);
     const publish = (publishIdx === -1) ? true : isTrue_(row[publishIdx]);
@@ -179,7 +179,7 @@ function readNotes_(ss, sheetName) {
     const rawTitle = pickByHeader_(headers, row, ['title','제목']) || '';
     const title = stripMdExt_(rawTitle);
     const year = pickByHeader_(headers, row, ['year','날짜','date']) || '';
-    const textRef = pickByHeader_(headers, row, ['text','markdown','본문','마크다운문서']) || '';
+    const textRef = pickByHeader_(headers, row, ['text','markdown','본문','마크다운문서','md']) || '';
     const pass = pickByHeader_(headers, row, ['pass','password','비밀번호']) || '';
     const show = (showIdx === -1) ? true : isTrue_(row[showIdx]);
     const publish = (publishIdx === -1) ? true : isTrue_(row[publishIdx]);
