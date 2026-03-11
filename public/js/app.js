@@ -149,11 +149,13 @@
       var rawOrder = list[5] || {};
 
       var profile = parseProfileRaw(rawProfile);
-      var courses = parseSectionRaw(rawCourses);
-      var projects = parseSectionRaw(rawProjects);
-      var exhibitions = parseSectionRaw(rawExhibitions);
+      var courses = parseSectionRaw(rawCourses, 'courses');
+      var projects = parseSectionRaw(rawProjects, 'projects');
+      var exhibitions = parseSectionRaw(rawExhibitions, 'exhibitions');
       var notes = parseNotesRaw(rawNotes);
       var order = parseOrderRaw(rawOrder);
+
+      logDataDiagnostics(profile, courses, projects, exhibitions, notes, rawProfile, rawCourses, rawProjects, rawExhibitions, rawNotes);
 
       return {
         ok: true,
@@ -221,12 +223,13 @@
     return { name: '', email: '', instagram: '', website: '' };
   }
 
-  function parseSectionRaw(raw) {
+  function parseSectionRaw(raw, sectionKey) {
     var headers = raw.headers || [];
     var rows = raw.rows || [];
     var map = headerIndexMap(headers);
     var all = [];
     var active = [];
+    var missingLinks = [];
     for (var i = 0; i < rows.length; i++) {
       var row = rows[i];
       var title = pickRow(map, row, ['title','제목']) || '';
@@ -239,6 +242,7 @@
       var show = truthy(pickRow(map, row, ['show','노출']), true);
       var publish = truthy(pickRow(map, row, ['publish','퍼블리시','게시']), true);
       if (!publish) continue;
+      if (!link) missingLinks.push({ section: sectionKey || '', title: String(title || ''), row: i + 2 });
       var item = {
         itemKey: makeKey(title, year, i),
         title: String(title),
@@ -254,7 +258,7 @@
       all.push(item);
       if (show) active.push(item);
     }
-    return { all: all, active: active };
+    return { all: all, active: active, missingLinks: missingLinks };
   }
 
   function parseNotesRaw(raw) {
@@ -296,6 +300,26 @@
       if (show) active.push(item);
     }
     return { all: all, active: active };
+  }
+
+  function logDataDiagnostics(profile, courses, projects, exhibitions, notes, rawProfile, rawCourses, rawProjects, rawExhibitions, rawNotes) {
+    try {
+      if (!profile || (!profile.instagram && rawProfile && rawProfile.rows && rawProfile.rows.length)) {
+        console.warn('[data] instagram is empty or not found in Profile sheet.');
+      }
+      var missing = []
+        .concat((courses && courses.missingLinks) || [])
+        .concat((projects && projects.missingLinks) || [])
+        .concat((exhibitions && exhibitions.missingLinks) || []);
+      if (missing.length) {
+        console.warn('[data] missing links in sections:', missing);
+      }
+      if (rawNotes && rawNotes.rows && rawNotes.rows.length && (!notes || !notes.all || !notes.all.length)) {
+        console.warn('[data] notes rows exist but parsed notes are empty.');
+      }
+    } catch (e) {
+      console.warn('[data] diagnostics error:', e);
+    }
   }
 
   function parseOrderRaw(raw) {
