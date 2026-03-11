@@ -9,7 +9,7 @@ const CONFIG = {
   GITHUB_REPO: 'ingee_kiosk',
   GITHUB_BRANCH: 'main',
   GITHUB_TOKEN: '',
-  BASE_PATH: 'data' // repo path
+  BASE_PATH: 'public/data' // repo path
 };
 
 const SECRET_SHEET_ID = '1MG9o_zfaZwjf8Ln7T125xdjt4Ku-D5moIvXFO90qLBs';
