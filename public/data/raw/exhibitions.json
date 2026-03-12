@@ -1,9 +1,9 @@
 {
   "sheet": "Exhibitions",
   "headers": [
-    "Title",
-    "Code",
     "Year",
+    "Code",
+    "Title",
     "Location",
     "DriveLink",
     "Show",
@@ -11,40 +11,67 @@
   ],
   "rows": [
     [
-      "test/test 3",
-      "1st.term / year3",
-      2026,
-      "Korea National University of Arts",
-      "https://drive.google.com/drive/folders/1Rvpoxh8z1HIDSefmOeD6POTV9BhzoaR-?usp=sharing",
+      "2025.11.15. - 2026.2.14.",
+      "Group",
+      "On weight",
+      "송은아트센터, 서울",
+      "",
       true,
       ""
     ],
     [
-      "test/test 3",
-      "1st.term / year3",
-      2026,
-      "Korea National University of Arts",
-      "https://drive.google.com/drive/folders/1Rvpoxh8z1HIDSefmOeD6POTV9BhzoaR-?usp=sharing",
+      "2025.4.15. - 2025.5.31",
+      "Group",
+      "Small Changes, Big Impact",
+      "리나갤러리, 서울",
+      "",
+      false,
+      ""
+    ],
+    [
+      "2024.9.3. – 2024.9.8.",
+      "Solo",
+      "Wind Through the wall",
+      "북촌전시장, 서울",
+      "",
       true,
-      1111
+      ""
     ],
     [
-      "test/test 3",
-      "1st.term / year3",
-      2026,
-      "Korea National University of Arts",
-      "https://drive.google.com/drive/folders/1Rvpoxh8z1HIDSefmOeD6POTV9BhzoaR-?usp=sharing",
+      "2024.4.25. - 2024.5.23.",
+      "Group",
+      "Fly by",
+      "Prompt Project, 서울",
+      "",
       false,
-      1111
+      ""
     ],
     [
-      "test/test 3",
-      "1st.term / year3",
-      2026,
-      "Korea National University of Arts",
-      "https://drive.google.com/drive/folders/1Rvpoxh8z1HIDSefmOeD6POTV9BhzoaR-?usp=sharing",
+      "2023.8.13. – 2023.8.20.",
+      "Solo",
+      "Resonance",
+      "N/A, 서울",
+      "",
       false,
-      1111
+      ""
+    ],
+    [
+      "2022.4.29. – 2022.5.14.",
+      "Solo",
+      "Screen script",
+      "IAH seoul, 서울",
+      "",
+      false,
+      ""
+    ],
+    [
+      "2021.1.21. – 2021.2.7.",
+      "Solo",
+      "Bresenham’s line",
+      "공간형, 서울",
+      "",
+      false,
+      ""
     ]
   ]
 }
