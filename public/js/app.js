@@ -1171,14 +1171,20 @@
     }
 
     el.innerHTML = list.map(function(item) {
+      var isTeaching = sectionKey === 'courses';
+      var hideCode = (sectionKey === 'exhibitions' || sectionKey === 'projects');
+      var yearText = String(item.year || '—');
+      if (!isTeaching && hideCode) {
+        yearText = yearText.replace(/\s*-\s*/g, ' <span class="year-sep">-</span> ');
+      }
       var lnkLabel = item.isDrive ? '↗ Drive' : '↗ Link';
       var lnk = item.hasDrive
         ? '<button class="course-row__link-btn" type="button" data-title="' + esc(item.title) + '" data-section="' + esc(sectionKey) + '" data-item-key="' + esc(item.itemKey) + '" data-requires-password="' + (item.requiresPassword ? '1' : '0') + '" data-is-drive="' + (item.isDrive ? '1' : '0') + '" onclick="openDriveModal(this)">' + lnkLabel + '</button>'
         : '<span class="course-row__nolink">—</span>';
       return (
-        '<div class="course-row">' +
+        '<div class="course-row course-row--' + esc(sectionKey) + '">' +
           '<div class="course-row__year-code">' +
-            '<span class="course-row__year">' + esc(item.year || '—') + '</span>' +
+            '<span class="course-row__year">' + yearText + '</span>' +
             '<span class="course-row__code"' + (!item.code ? ' style="color:#ccc"' : '') + '>' + esc(item.code || '—') + '</span>' +
           '</div>' +
           '<div class="course-row__main">' +

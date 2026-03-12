@@ -13,8 +13,8 @@
     --date-col-width: 10ch; /* 0000.00.00 */
     --code-col-width: 12ch;
     --grid-left: 17.5rem;
-    --grid-gap: 0.75rem;
-    --grid-gap-tight: 0.75rem;
+    --grid-gap: 0.6rem;
+    --grid-gap-tight: 0.6rem;
   }
 
   html { font-size: 100%; }
@@ -57,21 +57,21 @@
 
   /* ── PROFILE ── */
   .profile {
-    margin-bottom: 1.375rem;
-    padding: 0 0.625rem;
+    margin-bottom: 1.1rem;
+    padding: 0 0.5rem;
   }
 
   .profile__top {
-    min-height: 5rem;
+    min-height: 4rem;
     align-items: center;
     margin-bottom: 0;
   }
 
   .profile__name {
-    height: 5rem;
+    height: 4rem;
     align-items: center;
     display: inline-flex;
-    font-size: 1.75rem;
+    font-size: 1.25rem;
     font-weight: 700;
     line-height: 1;
     letter-spacing: -0.025em;
@@ -95,7 +95,7 @@
   .row.profile__top { align-items: center; }
 
   .profile__meta-row {
-    padding: 0.625rem 0;
+    padding: 0.5rem 0;
     border-bottom: 1px solid var(--line);
   }
 
@@ -109,7 +109,7 @@
   .profile__value,
   .profile__value a {
     color: var(--text);
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 500;
     letter-spacing: -0.01em;
     text-decoration: none;
@@ -203,7 +203,7 @@
   }
 
   .section-header__title {
-    font-size: 1.5rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.02em;
   }
@@ -223,7 +223,7 @@
 
   /* ── COURSE ROW ── */
 .course-row {
-  padding: 0.875rem 0 0.8125rem;
+  padding: 0.7rem 0 0.65rem;
   border-bottom: 1px solid var(--line);
   display: grid;
   grid-template-columns: var(--grid-left) 1fr;
@@ -237,14 +237,14 @@
 .course-row__year-code {
   display: grid;
   grid-template-columns: var(--date-col-width) minmax(0, 1fr);
-  gap: 1.25rem;
+  gap: 1rem;
   align-items: center;
 }
 
   .course-row__main {
     display: grid;
     grid-template-columns: max-content minmax(0, 1fr) auto;
-    gap: 1.25rem;
+    gap: 1rem;
     align-items: center;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -264,7 +264,7 @@
 
   .course-row__title {
     min-width: 0;
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: 600;
     letter-spacing: -0.02em;
     white-space: nowrap;
@@ -287,7 +287,7 @@
 .course-row__location {
   flex: 1 1 auto;
   min-width: 0;
-  font-size: 1.2rem;
+  font-size: 1rem;
   color: var(--muted);
   font-weight: 500;
   overflow: hidden;
@@ -888,14 +888,14 @@
   .qxCTlb:active { transform: translateX(-50%) translateY(0) scale(0.995) !important; }
 
   /* ── MOBILE ── */
-  @media (max-width: 800px) {
+@media (max-width: 800px) {
     :root { --content-gutter: 0.625rem; }
 
     body { padding-bottom: 5.375rem; }
     .wrap { width: calc(100% - 1.25rem); }
 
     .profile { margin-bottom: 2rem; }
-    .profile__name { font-size: 1.75rem; height: 3.75rem; }
+    .profile__name { font-size: 1.25rem; height: 3rem; }
 
     .row { grid-template-columns: 1fr; gap: 0.25rem; }
     .profile__top { min-height: 3.75rem; gap: 0.5rem; }
@@ -913,8 +913,8 @@
 
     .filter-bar { display: none; }
 
-    .section-header { min-height: 3.875rem; }
-    .section-header__title { font-size: 1.18rem; }
+    .section-header { min-height: 3.1rem; }
+    .section-header__title { font-size: 1rem; }
     .section-header__btn { font-size: 0.95rem; }
 
     .course-row {
@@ -1056,3 +1056,25 @@
     :root { --content-max: 99999px; --content-gutter: 40px; }
     html { font-size: 1vw; }
   }
+/* Hide code for Exhibitions/Projects */
+#section-exhibitions .course-row__code,
+#section-projects .course-row__code {
+  display: none;
+}
+#section-exhibitions .course-row__year-code,
+#section-projects .course-row__year-code {
+  gap: 0;
+}
+#section-exhibitions .course-row__year .year-sep,
+#section-projects .course-row__year .year-sep {
+  display: inline;
+}
+    #section-exhibitions .course-row__year,
+    #section-projects .course-row__year {
+      white-space: normal;
+      line-height: 1.2;
+    }
+    #section-exhibitions .course-row__year .year-sep,
+    #section-projects .course-row__year .year-sep {
+      display: block;
+    }
