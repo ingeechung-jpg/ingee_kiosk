@@ -505,14 +505,18 @@
     background: rgba(0,0,0,0.06);
   }
 
-  .note-prose a {
-    color: var(--muted);
+  .note-prose a,
+  .note-sidenote__text a,
+  .note-footnotes-bottom__text a {
+    color: var(--muted) !important;
     text-decoration: underline;
     text-underline-offset: 0.2em;
     text-decoration-thickness: 1px;
     text-decoration-color: var(--line-strong);
   }
-  .note-prose a:hover { text-decoration-color: var(--muted); }
+  .note-prose a:hover,
+  .note-sidenote__text a:hover,
+  .note-footnotes-bottom__text a:hover { text-decoration-color: var(--muted); }
 
   .note-prose ul,
   .note-prose ol {
@@ -906,9 +910,9 @@
 
     .section--courses,
     .section--list {
-      border-radius: 0.875rem;
-      padding: 0 0.875rem;
-      box-shadow: 0 0.75rem 1.5rem rgba(17,17,17,0.06);
+      border-radius: 0.3125rem;
+      padding: 0 0.625rem;
+      box-shadow: var(--shadow);
     }
 
     .filter-bar { display: none; }

@@ -1520,9 +1520,6 @@
       var linkBtn = row.querySelector('.course-row__link-btn');
       if (linkBtn) {
         openDriveModal(linkBtn);
-      } else {
-        var titleEl = row.querySelector('.course-row__title');
-        openNoLinkModal(titleEl ? titleEl.textContent.trim() : '안내');
       }
     });
   }
