@@ -1069,12 +1069,19 @@
 #section-projects .course-row__year .year-sep {
   display: inline;
 }
-    #section-exhibitions .course-row__year,
-    #section-projects .course-row__year {
-      white-space: normal;
-      line-height: 1.2;
-    }
-    #section-exhibitions .course-row__year .year-sep,
-    #section-projects .course-row__year .year-sep {
-      display: block;
-    }
+@media (max-width: 800px) {
+  #section-exhibitions .course-row__year,
+  #section-projects .course-row__year {
+    white-space: normal;
+    line-height: 1.2;
+  }
+  #section-exhibitions .course-row__year .year-sep,
+  #section-projects .course-row__year .year-sep {
+    display: block;
+    margin: 0.05rem 0;
+  }
+  #section-exhibitions .course-row__year .year-part,
+  #section-projects .course-row__year .year-part {
+    display: block;
+  }
+}

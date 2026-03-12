@@ -1174,8 +1174,17 @@
       var isTeaching = sectionKey === 'courses';
       var hideCode = (sectionKey === 'exhibitions' || sectionKey === 'projects');
       var yearText = String(item.year || '—');
+      var yearHtml = esc(yearText);
       if (!isTeaching && hideCode) {
-        yearText = yearText.replace(/\s*-\s*/g, ' <span class="year-sep">-</span> ');
+        var parts = yearText.split(/\s*-\s*/);
+        if (parts.length >= 2) {
+          var top = esc(parts[0]);
+          var bottom = esc(parts.slice(1).join(' - '));
+          yearHtml =
+            '<span class="year-part year-top">' + top + '</span>' +
+            '<span class="year-sep">-</span>' +
+            '<span class="year-part year-bottom">' + bottom + '</span>';
+        }
       }
       var lnkLabel = item.isDrive ? '↗ Drive' : '↗ Link';
       var lnk = item.hasDrive
@@ -1184,7 +1193,7 @@
       return (
         '<div class="course-row course-row--' + esc(sectionKey) + '">' +
           '<div class="course-row__year-code">' +
-            '<span class="course-row__year">' + yearText + '</span>' +
+            '<span class="course-row__year">' + yearHtml + '</span>' +
             '<span class="course-row__code"' + (!item.code ? ' style="color:#ccc"' : '') + '>' + esc(item.code || '—') + '</span>' +
           '</div>' +
           '<div class="course-row__main">' +
