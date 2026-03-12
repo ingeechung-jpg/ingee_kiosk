@@ -715,6 +715,10 @@
 
       // Restore URLs
       t = t.replace(/@@URL(\d+)@@/g, function(_, idx) { return urlMap[Number(idx)] || ''; });
+      // Auto-link bare URLs (avoid URLs inside attributes)
+      t = t.replace(/(^|[^"'>])(https?:\/\/[^\s)]+)/g, function(_, prefix, url) {
+        return prefix + '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+      });
       t = t.replace(/\[\^([^\]]+)\]/g, function(_, id) {
         var safeId = encodeFootnoteId(id);
         if (!safeId) return '';
