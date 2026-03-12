@@ -610,6 +610,14 @@
     return text;
   }
 
+  function resolveAssetUrl(url) {
+    var u = String(url || '').trim();
+    if (!u) return u;
+    if (/^(https?:)?\/\//i.test(u) || /^data:/i.test(u)) return u;
+    if (u.indexOf('/') === 0) return u;
+    return staticPath(u.replace(/^\.\//, ''));
+  }
+
   function markdownToHtml(md) {
     var lines = normalizeMarkdownInput(md).replace(/\r\n?/g, '\n').split('\n');
     var footnotes = {};
@@ -693,10 +701,14 @@
       var t = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 
       // Links/images first (so URL protection doesn't break markdown links)
-      t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g,
-        '<figure><img src="$2" alt="$1" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>$1</figcaption></figure>');
-      t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,
-        '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      t = t.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, function(_, alt, url) {
+        var src = resolveAssetUrl(url);
+        return '<figure><img src="' + src + '" alt="' + alt + '" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>' + alt + '</figcaption></figure>';
+      });
+      t = t.replace(/\[([^\]]+)\]\(([^)\s]+)\)/g, function(_, label, url) {
+        var href = resolveAssetUrl(url);
+        return '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + label + '</a>';
+      });
 
       // Protect remaining URLs from emphasis parsing
       var urlMap = [];
@@ -746,7 +758,7 @@
         if (!line) continue;
         var m = line.match(/^!\[([^\]]*)\]\(([^)\s]+)\)$/);
         if (!m) continue;
-        figures.push('<figure><img src="' + m[2] + '" alt="' + esc(m[1]) + '" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>' + esc(m[1]) + '</figcaption></figure>');
+        figures.push('<figure><img src="' + resolveAssetUrl(m[2]) + '" alt="' + esc(m[1]) + '" loading="lazy" decoding="async" referrerpolicy="no-referrer"><figcaption>' + esc(m[1]) + '</figcaption></figure>');
       }
       if (!figures.length) return '';
       return '<div class="note-gallery note-gallery--' + mode + '">' + figures.join('') + '</div>\n';
