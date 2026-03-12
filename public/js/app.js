@@ -1181,8 +1181,7 @@
           var top = esc(parts[0]);
           var bottom = esc(parts.slice(1).join(' - '));
           yearHtml =
-            '<span class="year-part year-top">' + top + '</span>' +
-            '<span class="year-sep">-</span>' +
+            '<span class="year-part year-top">' + top + ' -</span>' +
             '<span class="year-part year-bottom">' + bottom + '</span>';
         }
       }
